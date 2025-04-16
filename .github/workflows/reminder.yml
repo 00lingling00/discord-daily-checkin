@@ -1,0 +1,24 @@
+name: Discord Daily Reminder Test
+
+on:
+  schedule:
+    - cron: '0 7 * * *'  # 出社提醒 - 15:55 JST
+    - cron: '1 7 * * *'  # 退社提醒 - 15:57 JST
+  workflow_dispatch:
+
+jobs:
+  send_reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set message content
+        run: |
+          if [ "${{ github.event.schedule }}" = "55 6 * * *" ]; then
+            echo "DISCORD_MESSAGE=**🕘 出社打卡提醒：**\n请使用以下格式：\n出社\n🧠 今日计划：\n🕘 时间：（可空）\n📝 备注：" >> $GITHUB_ENV
+          else
+            echo "DISCORD_MESSAGE=**🕔 退社打卡提醒：**\n请使用以下格式：\n退社\n✅ 今日总结：\n🕔 时间：（可空）\n🕒 工时：（可空）\n📝 备注：" >> $GITHUB_ENV
+          fi
+
+      - name: Send reminder to Discord
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+          -d "{\"content\": \"$DISCORD_MESSAGE\"}" ${{ secrets.DISCORD_WEBHOOK }}
