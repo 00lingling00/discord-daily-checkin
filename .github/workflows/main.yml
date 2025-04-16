@@ -1,0 +1,17 @@
+name: Discord Daily Check-in Reminder
+
+on:
+  schedule:
+    - cron: '0 1 * * *' # UTC 时间每天 00:00，对应日本时间 09:00
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord Message
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{
+              "content": "**📣 每日打卡提醒！**\n请大家根据以下格式完成打卡：\n🕘 时间：\n🧠 今日计划：\n✅ 昨日总结：\n📝 备注："
+            }' ${{ secrets.DISCORD_WEBHOOK }}
