@@ -10,9 +10,14 @@ jobs:
   send_reminder:
     runs-on: ubuntu-latest
     steps:
-      - name: Set message content
+      - name: Log UTC time for debugging
         run: |
-          if [ "${{ github.event.schedule }}" = "30 0 * * *" ]; then
+          echo "⏰ GitHub Actions triggered at: $(date -u) UTC"
+
+      - name: Determine message content
+        run: |
+          current_hour=$(date -u +"%H")
+          if [ "$current_hour" = "0" ]; then
             echo "DISCORD_MESSAGE=**🕘 出社打卡提醒：**\n\n出社\n🧠 今日计划：\n🕘 时间： :\n📝 备注：" >> $GITHUB_ENV
           else
             echo "DISCORD_MESSAGE=**🕔 退社打卡提醒：**\n\n退社\n✅ 今日总结：\n🕔 时间： :\n🕒 工时：h\n📝 备注：" >> $GITHUB_ENV
