@@ -2,8 +2,8 @@ name: Discord Daily Reminder Test
 
 on:
   schedule:
-    - cron: '12 7 * * *'  # 出社提醒 - 15:55 JST
-    - cron: '14 7 * * *'  # 退社提醒 - 15:57 JST
+    - cron: '30 0 * * *'  # 出社提醒 - 10:00 JST 提前半小时防止延迟
+    - cron: '30 9 * * *'  # 退社提醒 - 20:00 JST
   workflow_dispatch:
 
 jobs:
@@ -12,10 +12,10 @@ jobs:
     steps:
       - name: Set message content
         run: |
-          if [ "${{ github.event.schedule }}" = "55 6 * * *" ]; then
-            echo "DISCORD_MESSAGE=**🕘 出社打卡提醒：**\n\n出社\n🧠 今日计划：\n🕘 时间：（可空）\n📝 备注：" >> $GITHUB_ENV
+          if [ "${{ github.event.schedule }}" = "30 0 * * *" ]; then
+            echo "DISCORD_MESSAGE=**🕘 出社打卡提醒：**\n\n出社\n🧠 今日计划：\n🕘 时间： :\n📝 备注：" >> $GITHUB_ENV
           else
-            echo "DISCORD_MESSAGE=**🕔 退社打卡提醒：**\n\n退社\n✅ 今日总结：\n🕔 时间：（可空）\n🕒 工时：（可空）\n📝 备注：" >> $GITHUB_ENV
+            echo "DISCORD_MESSAGE=**🕔 退社打卡提醒：**\n\n退社\n✅ 今日总结：\n🕔 时间： :\n🕒 工时：h\n📝 备注：" >> $GITHUB_ENV
           fi
 
       - name: Send reminder to Discord
