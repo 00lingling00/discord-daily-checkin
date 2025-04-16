@@ -3,7 +3,7 @@ name: Discord Daily Reminder Test
 on:
   schedule:
     - cron: '30 0 * * *'  # 出社提醒 - 10:00 JST 提前半小时防止延迟
-    - cron: '30 9 * * *'  # 退社提醒 - 20:00 JST
+    - cron: '30 11 * * *'  # 退社提醒 - 20:00 JST
   workflow_dispatch:
 
 jobs:
